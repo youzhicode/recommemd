@@ -10,10 +10,10 @@ func (size SizeRecall) Name() string {
 	return size.Tag
 }
 
-func (size SizeRecall) Recall(n int) (rect []*common.Product) {
+func (size SizeRecall) Recall(AllProducts []*common.Product, n int) (rect []*common.Product) {
 	rect = make([]*common.Product, 0, n)
 
-	for _, product := range allProducts {
+	for _, product := range AllProducts {
 		if product.Size < 200 {
 			rect = append(rect, product)
 		}

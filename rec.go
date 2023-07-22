@@ -7,6 +7,7 @@ import (
 	"rec_sys/filter"
 	"rec_sys/recall"
 	"rec_sys/sort"
+	"rec_sys/source"
 	"time"
 )
 
@@ -18,10 +19,12 @@ type Recommender struct {
 
 func (rec *Recommender) Rec() []*common.Product {
 	RecallMap := make(map[int]*common.Product, 100)
+	Source := source.LocalSource{SourceName: "localSource"}
+	AllProducts := Source.Source()
 	// 顺序遍历，每一路召回
 	for _, recaller := range rec.Recallers {
 		begin := time.Now()
-		products := recaller.Recall(10)
+		products := recaller.Recall(AllProducts, 10)
 
 		seconds := time.Since(begin).Nanoseconds()
 		log.Printf("召回%s用时%dns, 召回了%d个商品", recaller.Name(), seconds, len(products))
